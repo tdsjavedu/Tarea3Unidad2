@@ -21,10 +21,39 @@ function hacerFact($a, $b, $c) {
     return $resultado;
 }
 
+function consultarCliente($nombreCliente) {
+    $host = "localhost";
+    $usuario = "root";
+    $contrasena = "1234"; 
+    $baseDatos = "tienda";
+
+    $conexion = new mysqli($host, $usuario, $contrasena, $baseDatos);
+
+    if ($conexion->connect_error) {
+        die("Error de conexión: " . $conexion->connect_error);
+    }
+
+    $sql = "SELECT * FROM clientes WHERE nombre = '$nombreCliente'";
+    $resultado = $conexion->query($sql);
+
+    if ($resultado->num_rows > 0) {
+        while ($fila = $resultado->fetch_assoc()) {
+            echo "Cliente encontrado: " . $fila["nombre"] . " - Email: " . $fila["email"] . "\n";
+        }
+    } else {
+        echo "Cliente no encontrado.\n";
+    }
+
+    $conexion->close();
+}
+
+
 // Datos del cliente y los productos comprados
 $z = "Juan";
 $y = ["Camisa", "Pantalón", "Zapatos"];
 $x = 1000;
+
+consultarCliente($z);
 
 $fa = haceFact($z, $y, $x);
 
